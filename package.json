@@ -1,6 +1,6 @@
 {
   "name": "dsh-drag-workspace",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Drag a DSH session row onto another workspace header to move it; the cross-workspace move pipeline is built in.",
   "keywords": [
     "dsh",

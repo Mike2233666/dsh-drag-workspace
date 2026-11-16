@@ -64,26 +64,59 @@ git push
 
 ## 2. 发布到 npm
 
-在 <https://www.npmjs.com/settings/~/tokens> 建一个 Automation token，写进 `~/.npmrc`：
+包已上线：<https://www.npmjs.com/package/dsh-drag-workspace>（首个公开版本 `0.2.0`，
+随后 `0.2.1`）。
+
+凭证写在 `~/.npmrc`：
 
 ```ini
 //registry.npmjs.org/:_authToken=<token>
 ```
 
-然后：
+本地发布（当前可用，不需要验证码）：
 
 ```bash
 cd dsh-drag-workspace
-pnpm publish --access public --no-git-checks
+npm publish --access public
 ```
 
-或装好 npm 后 `npm publish --access public`。
+发布后回读 registry 验证（比 CLI 的自述可靠——首次发布时 PUT 返回 `202`，
+要等一两分钟版本才真正出现）：
 
-发布后验证：
-
-```bash
-npm view dsh-drag-workspace version dist.tarball
+```powershell
+$p = Invoke-RestMethod 'https://registry.npmjs.org/dsh-drag-workspace'
+$p.'dist-tags'.latest
+$p.versions.'<版本>'.dist.integrity   # 应等于本地 npm pack 输出的 integrity
 ```
+
+### 已踩过的坑（2026-11）
+
+1. **账号开了 2FA 时普通 granular token 不能发布**：
+   `403 ... granular access token with bypass 2fa enabled is required`。
+2. **bypass-2FA token 能直发，但不能改信任关系**：
+   `403 Granular Access Tokens that bypass two-factor authentication may not perform this action`。
+   npm 的进度表：bypass token 的账户变更权限 2026-08 起受限，直发权限 2027-01 停止。
+3. **新包首次发布会有 `0.0.0-stage` 占位版本**（`Temporary package placeholder for
+   staged publishing`），它不会成为 `latest`，不影响安装。
+
+### Trusted Publishing（推荐终点，尚未配置）
+
+`.github/workflows/publish.yml` 已就绪：`workflow_dispatch` 或 `release` 触发，
+跑完 `check`/`test` 后 `npm publish --provenance`，不需要任何 token。
+
+配置一次即可（三选一）：
+
+- 网页：<https://www.npmjs.com/package/dsh-drag-workspace/access> →
+  **Trusted publishing** → GitHub Actions → Repository
+  `Mike2233666/dsh-drag-workspace`、Workflow `publish.yml`、Environment 留空、
+  勾 **npm publish**；
+- CLI（需要非 bypass 的 granular token）：`npm trust github dsh-drag-workspace
+  --file publish.yml --repo Mike2233666/dsh-drag-workspace --allow-publish -y`；
+- 两者都需要一次 2FA 确认（浏览器里的指纹/passkey，或验证器 App 的 6 位码）。
+
+前置条件：包必须已存在（已满足）；`npm trust` 要求 npm ≥ 11.15.0。
+
+配置完成后，建议把 bypass-2FA token 全部删除，并且每次发版走 CI。
 
 ## 3. 干净环境安装验证
 
@@ -130,8 +163,9 @@ https://cdn.jsdelivr.net/npm/dsh-plugin-catalog/index.json
 
 1. 改 `version`，更新 `CHANGELOG.md`；
 2. `npm run check && npm test`；
-3. `pnpm pack` 检查 tarball 内容；
-4. `pnpm publish`；
+3. `npm publish --dry-run`（或 `npm pack --dry-run`）检查 tarball 内容；
+4. 发布：信任关系配好后走 CI（Actions → publish → Run workflow），
+   否则本地 `npm publish --access public`；
 5. 若同步了上游 vendored 代码，在 CHANGELOG 里写明基线版本。
 
 ## 已打包验证
