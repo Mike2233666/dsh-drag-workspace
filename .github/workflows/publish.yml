@@ -1,0 +1,51 @@
+name: publish
+
+# 通过 Trusted Publishing（OIDC）发布到 npm —— 不需要 npm token，也不需要 2FA 验证码。
+# 前置：在 npm 上为 dsh-drag-workspace 配置本工作流的信任关系：
+#   npm trust github dsh-drag-workspace --file publish.yml \
+#     --repo Mike2233666/dsh-drag-workspace --allow-publish -y
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "要发布的版本号（仅作为记录；实际以 package.json 为准）"
+        required: false
+        type: string
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write # OIDC：换取 npm 的短期发布凭证
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      # 仓库没有 lockfile，直接升级全局 npm（OIDC 发布需要 npm >= 11.5.1）
+      - name: Upgrade npm
+        run: npm install -g npm@latest
+
+      - name: Verify version matches tag (release only)
+        if: github.event_name == 'release'
+        run: |
+          PKG_VERSION="v$(node -p "require('./package.json').version")"
+          if [ "$PKG_VERSION" != "${{ github.event.release.tag_name }}" ]; then
+            echo "package.json 版本 $PKG_VERSION 与 tag ${{ github.event.release.tag_name }} 不一致" >&2
+            exit 1
+          fi
+
+      - name: Check and test
+        run: |
+          npm run check
+          npm test
+
+      - name: Publish
+        run: npm publish --access public --provenance

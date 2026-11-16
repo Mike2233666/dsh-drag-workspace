@@ -3,12 +3,37 @@
 当前状态：代码、测试、打包都已就绪，`pnpm pack` 产物在仓库根目录
 （`dsh-drag-workspace-0.2.0.tgz`，约 72 KB）。剩下的是需要账号和网络的动作。
 
-## 0. 前置
+## 0. 前置（本机环境，2026-11-17 实测）
 
-这台机器目前**没有 `git`、没有 `npm`/`npx`**，`~/.npmrc` 也不存在。发布前二选一：
+工具都在便携目录里，且已写进用户 PATH（新开的终端可直接用）：
 
-- 装 Git for Windows + Node.js（自带 npm），或
-- 只用 pnpm（已有）：`node <pnpm.mjs> publish`，凭证写进 `~/.npmrc`。
+| 工具 | 路径 | 版本 |
+| --- | --- | --- |
+| git | `C:\Users\HUAWEI\Tools\PortableGit\cmd\git.exe` | 2.56.1 |
+| npm | `C:\Users\HUAWEI\Tools\npm\bin\npm.cmd` | 12.2.2 |
+| node | DSH 运行时自带（`~\.dsh\dsh-runtimes\...\node\bin`） | 24.x / 26.x |
+
+凭证在 `~/.npmrc`：
+
+```ini
+//registry.npmjs.org/:_authToken=<token>
+```
+
+**坑：账号开了 2FA 时，普通 granular token 发布会被拒**：
+
+```
+403 ... Two-factor authentication or granular access token with bypass 2fa enabled is required
+```
+
+解决：用 **Classic → Automation** token，或在 granular token 上勾选 **Bypass 2FA**
+（需要发布权限 + 读改该包）。否则每次都得 `npm publish --otp=<6 位码>`。
+
+当前 DSH 会话里的 pwsh 若报 `git`/`npm` 不存在，是进程继承了旧 PATH，
+在命令里前置路径即可：
+
+```powershell
+$env:Path = "C:\Users\HUAWEI\Tools\npm\bin;C:\Users\HUAWEI\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\node\bin;C:\Users\HUAWEI\Tools\PortableGit\cmd;" + $env:Path
+```
 
 ## 1. 仓库与元数据（已完成）
 
@@ -22,17 +47,20 @@
 "bugs": { "url": "https://github.com/Mike2233666/dsh-drag-workspace/issues" }
 ```
 
-首次推送（装好 git 后）：
+首次推送：**已完成**。`main` 与远端一致，提交 `43b2f01`（`dsh-drag-workspace 0.2.0`，
+27 个文件；`*.tgz` 被 `.gitignore` 排除）。远端仓库 public，默认分支 `main`。
+
+以后改动的常规流程：
 
 ```bash
 cd dsh-drag-workspace
-git init
-git add .
-git commit -m "dsh-drag-workspace 0.2.0"
-git branch -M main
-git remote add origin https://github.com/Mike2233666/dsh-drag-workspace.git
-git push -u origin main
+git add -A
+git commit -m "…"
+git push
 ```
+
+> 提交作者用的是本地仓库配置里的 `Mike2233666 <Mike2233666@users.noreply.github.com>`
+> （`git config --local user.name/email`），没有全局身份。
 
 ## 2. 发布到 npm
 
