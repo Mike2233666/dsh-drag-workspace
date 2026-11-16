@@ -1,0 +1,9 @@
+# Submission for awesome-dsh-plugin/awesome-dsh-plugin
+# Copy this file to data/plugins/Mike2233666__dsh-drag-workspace.yml in a PR.
+# Note: description.en contains ": ", so it must stay quoted.
+url: https://github.com/Mike2233666/dsh-drag-workspace
+name: Mike2233666/dsh-drag-workspace
+category: session
+description:
+  en: 'Drag a session row onto another workspace header to move it: rewrites the session cwd, re-homes the artifact and swaps workspace accounting, with the move pipeline built in.'
+  zh: '把 DSH 侧栏的会话行拖到另一个 workspace 标题上即可移动会话：重写会话 cwd、就地迁移 artifact 并交换工作区归属，移动管线已内置。'
