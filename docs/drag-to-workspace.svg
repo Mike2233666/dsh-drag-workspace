@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="460" viewBox="0 0 880 460" role="img" aria-label="Drag a session row onto another workspace header">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4c8dff"/>
+    </marker>
+    <style>
+      .panel { fill: #ffffff; stroke: #e5e7eb; stroke-width: 1.5; }
+      .row { fill: #f8fafc; stroke: #eef2f7; stroke-width: 1; }
+      .row-active { fill: #eaf1ff; stroke: #b9cffd; stroke-width: 1.5; }
+      .target { fill: #eaf1ff; stroke: #4c8dff; stroke-width: 2; stroke-dasharray: 6 4; }
+      .t { font-family: "Segoe UI", system-ui, -apple-system, sans-serif; fill: #1f2937; }
+      .muted { fill: #6b7280; }
+      .accent { fill: #4c8dff; }
+      .step { fill: #ffffff; stroke: #e5e7eb; stroke-width: 1.5; }
+      .badge { fill: #4c8dff; }
+    </style>
+  </defs>
+
+  <rect width="880" height="460" fill="#fbfcfe"/>
+
+  <!-- sidebar panel -->
+  <rect class="panel" x="48" y="36" width="380" height="388" rx="12"/>
+  <text class="t muted" x="72" y="68" font-size="13" letter-spacing="1">WORKSPACES</text>
+
+  <!-- group A -->
+  <g>
+    <rect x="70" y="88" width="18" height="14" rx="3" fill="none" stroke="#6b7280" stroke-width="1.5"/>
+    <text class="t" x="98" y="100" font-size="16">workspace</text>
+  </g>
+  <g>
+    <rect class="row" x="70" y="116" width="336" height="34" rx="7"/>
+    <text class="t" x="86" y="138" font-size="14">Project Alpha</text>
+
+    <rect class="row-active" x="70" y="158" width="336" height="34" rx="7"/>
+    <text class="t" x="86" y="180" font-size="14">Session · move to workspace</text>
+    <circle class="accent" cx="388" cy="175" r="3"/>
+
+    <rect class="row" x="70" y="200" width="336" height="34" rx="7"/>
+    <text class="t" x="86" y="222" font-size="14">Meeting notes</text>
+  </g>
+
+  <!-- target group header -->
+  <g>
+    <rect class="target" x="62" y="296" width="352" height="40" rx="8"/>
+    <rect x="78" y="307" width="18" height="14" rx="3" fill="none" stroke="#4c8dff" stroke-width="1.5"/>
+    <text class="t" x="106" y="320" font-size="16">Default workspace</text>
+    <text class="t accent" x="344" y="320" font-size="12">drop here</text>
+  </g>
+
+  <!-- drag arrow from row to target -->
+  <path d="M 330 196 C 420 210, 430 286, 402 312" fill="none" stroke="#4c8dff" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+  <g transform="translate(300 196)">
+    <path d="M 0 0 L 0 18 L 5 13 L 9 21 L 12 20 L 8 12 L 15 12 Z" fill="#1f2937"/>
+  </g>
+
+  <!-- right: what happens -->
+  <text class="t" x="500" y="72" font-size="13" letter-spacing="1" fill="#6b7280">WHAT CHANGES</text>
+
+  <g>
+    <rect class="step" x="500" y="88" width="320" height="84" rx="10"/>
+    <circle class="badge" cx="528" cy="116" r="11"/>
+    <text x="528" y="121" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="12" fill="#fff">1</text>
+    <text class="t" x="550" y="121" font-size="15">会话 artifact 的 cwd</text>
+    <text class="t muted" x="550" y="145" font-size="12.5">header 就地重写，历史消息不动</text>
+  </g>
+
+  <g>
+    <rect class="step" x="500" y="184" width="320" height="84" rx="10"/>
+    <circle class="badge" cx="528" cy="212" r="11"/>
+    <text x="528" y="217" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="12" fill="#fff">2</text>
+    <text class="t" x="550" y="217" font-size="15">workspace 归属</text>
+    <text class="t muted" x="550" y="241" font-size="12.5">sessionIds 换到目标工作区</text>
+  </g>
+
+  <g>
+    <rect class="step" x="500" y="280" width="320" height="84" rx="10"/>
+    <circle class="badge" cx="528" cy="308" r="11"/>
+    <text x="528" y="313" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="12" fill="#fff">3</text>
+    <text class="t" x="550" y="313" font-size="15">磁盘文件</text>
+    <text class="t muted" x="550" y="337" font-size="12.5">不移动、不复制，项目目录留在原处</text>
+  </g>
+
+  <text class="t muted" x="500" y="404" font-size="12">拖回原 workspace 即可恢复 cwd。</text>
+</svg>

@@ -1,0 +1,59 @@
+{
+  "name": "dsh-drag-workspace",
+  "version": "0.2.0",
+  "description": "Drag a DSH session row onto another workspace header to move it; the cross-workspace move pipeline is built in.",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "deepseek",
+    "workspace",
+    "session",
+    "drag-and-drop",
+    "cordis"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mike2233666/dsh-drag-workspace.git"
+  },
+  "homepage": "https://github.com/Mike2233666/dsh-drag-workspace#readme",
+  "bugs": {
+    "url": "https://github.com/Mike2233666/dsh-drag-workspace/issues"
+  },
+  "type": "module",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "README.en.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "docs"
+  ],
+  "engines": {
+    "node": ">=22.15.0"
+  },
+  "scripts": {
+    "check": "node --check lib/index.js && node --check lib/client.js && node --check lib/vendor/session-manager/index.js",
+    "test": "node test/smoke.mjs && node test/host-smoke.mjs && node test/host-move.mjs"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [],
+      "platform": "web"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT"
+}

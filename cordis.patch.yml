@@ -1,0 +1,5 @@
+# dsh-drag-workspace bundle layer: insert the drag-to-workspace plugin row.
+- insert:
+    - id: dsh-drag-workspace
+      name: 'dsh-drag-workspace'
+      config: {}
