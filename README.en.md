@@ -98,6 +98,17 @@ reconciliation and update checks never run; only `moveSession` is used.
 - the vendored pipeline tracks upstream v0.7.8 and must be re-synced by hand
   when upstream changes.
 
+## Related plugins
+
+Two plugins already move sessions across workspaces:
+[`dsh-workspace-mover`](https://github.com/PianoPrince/dsh-workspace-mover) (move
+history, one-click undo, orphan recovery, agent tools) and
+[`dsh-session-drag-move`](https://github.com/FurryBear2025/dsh-session-drag-move).
+This plugin deliberately stays smaller: the move pipeline is vendored so there is
+no third-party plugin dependency, it exposes no extra HTTP API beyond one
+owner-only endpoint, and dragging is the only trigger. If you want history, undo
+or agent-facing tools, install `dsh-workspace-mover` instead.
+
 ## Development
 
 ```bash

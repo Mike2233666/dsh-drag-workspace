@@ -83,6 +83,15 @@ context，让它的 `effect`/`on` 失效——它的 HTTP API、启动对账和�
 - 带 Git worktree 的会话会被宿主拒绝；
 - 内嵌管线锁在上游 v0.7.8，上游升级后需手动同步。
 
+## 同类插件
+
+已经有两个插件在做同一件事： [`dsh-workspace-mover`](https://github.com/PianoPrince/dsh-workspace-mover)
+（移动历史、一键撤回、失联会话恢复、agent 工具）和
+[`dsh-session-drag-move`](https://github.com/FurryBear2025/dsh-session-drag-move)。
+本插件刻意保持更小：移动管线内嵌，因此不依赖任何第三方插件；除一个 owner-only
+端点外不额外暴露 HTTP API；触发方式只有拖拽。需要历史、撤回或面向 agent 的工具，
+请改装 `dsh-workspace-mover`。
+
 ## 开发与测试
 
 ```bash

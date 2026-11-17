@@ -5,5 +5,5 @@ url: https://github.com/Mike2233666/dsh-drag-workspace
 name: Mike2233666/dsh-drag-workspace
 category: session
 description:
-  en: 'Drag a session row onto another workspace header to move it: rewrites the session cwd, re-homes the artifact and swaps workspace accounting, with the move pipeline built in.'
-  zh: '把 DSH 侧栏的会话行拖到另一个 workspace 标题上即可移动会话：重写会话 cwd、就地迁移 artifact 并交换工作区归属，移动管线已内置。'
+  en: 'A dependency-free drag-to-move plugin for the DSH sidebar: drop a session row onto another workspace header and it genuinely moves the session — the header cwd is rewritten, the log is re-homed and the workspace accounting swapped by the built-in pipeline, published atomically and rolled back on failure.'
+  zh: '零依赖的侧栏拖拽搬家插件：把会话行拖到另一个 workspace 标题上，它会真正改写会话 header 的 cwd、把日志迁到目标目录并交换工作区归属；内置管线原子发布，失败自动回滚。'
